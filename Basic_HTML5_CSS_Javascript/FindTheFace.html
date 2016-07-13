@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Matching Game</title>
+        <style>
+            div {position:absolute; width:500px; height:500px}
+            #rightSide {left: 500px; border-left: 2px solid black}
+        </style>
+    </head>
+    <body id="body" onload="generateFaces()">
+      <script>
+      var numberOfFaces = 5;
+      var playedgames = 0;
+      function generateFaces()
+      {
+          var theLeftSide = document.getElementById("leftSide");
+          var theRightSide = document.getElementById("rightSide");
+          var theBody = document.getElementById("body");
+          for (var i = 1; i <= numberOfFaces; i++)
+          {
+              var topPos = Math.floor(Math.random() * 401);
+              var leftPos = Math.floor(Math.random() * 401);
+              var theImg = document.createElement("img");
+              theImg.src = "http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
+              theImg.style.position = "absolute";
+              theImg.style.top = topPos + "px";
+              theImg.style.left = leftPos + "px";
+              theLeftSide.appendChild(theImg);
+          }
+          leftSideImages = theLeftSide.cloneNode(true);
+          leftSideImages.removeChild(leftSideImages.lastChild);
+          theRightSide.appendChild(leftSideImages);
+          theLeftSide.lastChild.onclick = function nextLevel(event)
+          {
+              event.stopPropagation();
+              numberOfFaces += 5;
+              playedgames++;
+              while (theLeftSide.firstChild)
+              {
+                  theLeftSide.removeChild(theLeftSide.firstChild);
+              }
+              while (theRightSide.firstChild)
+              {
+                  theRightSide.removeChild(theRightSide.firstChild);
+              }
+              generateFaces();
+          };
+          theBody.onclick = function gameOver()
+          {
+              alert("Game Over!\n\nYou were able to win "+playedgames+" games, that is good.");
+              theBody.onclick = null;
+              theLeftSide.lastChild.onclick = null;
+          };
+      }
+      </script>
+        <h1>Matching Game</h1>
+        <h3>Click on the <big>extra</big> smiling face on the <big>left</big></h3>
+        <div id="leftSide"></div>
+        <div id="rightSide"></div>
+    </body>
+</html>
